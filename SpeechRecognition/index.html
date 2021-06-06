@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition</title>
+    <style>
+        * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Cursive";
+  font-size: 20px;
+}
+section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  background-color: rgb(0, 0, 0);
+  flex-direction: column;
+  padding: 50px 0;
+}
+section h1 {
+  color: rgb(255, 255, 255);
+    font-family: "Cursive";
+  text-align: center;
+  width: 100%;
+  font-size: 70px;
+  margin-bottom: 10px;
+}
+section p {
+  text-align: center;
+  color: rgb(255, 255, 255);
+  width: 100%;
+  margin-bottom: 40px;
+}
+.container {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  justify-content: center;
+}
+.texts p {
+  color: black;
+  text-align: left;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.texts p.replay {
+  text-align: right;
+}
+
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Speech<br> Recognition</h1>
+        <p>For Help Search Speech Reconition MDN 😎😎</p>
+        <div class="container">
+            <div class="texts">
+            </div>
+        </div>
+    </section>
+    <script>
+        const texts = document.querySelector(".texts");
+
+            window.SpeechRecognition =
+                window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            const recognition = new window.SpeechRecognition();
+            recognition.interimResults = true;
+
+            let p = document.createElement("p");
+
+            recognition.addEventListener("result", (e) => {
+                texts.appendChild(p);
+                const text = Array.from(e.results)
+                    .map((result) => result[0])
+                    .map((result) => result.transcript)
+                    .join("");
+
+                p.innerText = text;
+                if (e.results[0].isFinal) {
+                    if (text.includes("how are you")) {
+                        p = document.createElement("p");
+                        p.classList.add("replay");
+                        p.innerText = "I am fine";
+                        texts.appendChild(p);
+                    }
+                    if (
+                        text.includes("what's your name") ||
+                        text.includes("what is your name")
+                    ) {
+                        p = document.createElement("p");
+                        p.classList.add("replay");
+                        p.innerText = "My Name is Sahil";
+                        texts.appendChild(p);
+                    }
+                   
+                    p = document.createElement("p");
+                }
+            });
+
+            recognition.addEventListener("end", () => {
+                recognition.start();
+            });
+
+            recognition.start();
+
+    </script>
+</body>
+</html>
